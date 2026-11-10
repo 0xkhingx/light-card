@@ -18,8 +18,17 @@ export default function App() {
   const [playing, setPlaying] = useState(false)
   const [showScrubber, setShowScrubber] = useState(true)
 
-  const target = override ?? clock
-  const hour = useSmoothedHour(target)
+  // `?capture` hands the clock to a recording script (window.__setHour) for frame-exact video.
+  const [captured, setCaptured] = useState<number | null>(null)
+  useEffect(() => {
+    if (!new URLSearchParams(window.location.search).has('capture')) return
+    setCaptured(5.2)
+    ;(window as unknown as { __setHour: (h: number) => void }).__setHour = setCaptured
+  }, [])
+
+  const target = captured ?? override ?? clock
+  const smoothed = useSmoothedHour(target)
+  const hour = captured ?? smoothed
   const { vars } = sampleDay(hour)
 
   // "play sunrise": run the whole day from before dawn through to night, then stop.
