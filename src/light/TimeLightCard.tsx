@@ -93,14 +93,16 @@ export function TimeLightCard({
   }
 
   return (
+    // The outer element is the size container. cqw units on the container itself would resolve
+    // against the viewport, so everything sized in cqw (including the corner radius) lives inside it.
+    <div className={`w-full font-sans ${className}`} style={{ containerType: 'inline-size' }}>
     <div
       ref={rootRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={`relative aspect-[544/613] w-full overflow-hidden rounded-[8cqw] ${className}`}
+      className="relative aspect-[544/613] w-full overflow-hidden rounded-[8cqw]"
       style={{
         ...day.vars,
-        containerType: 'inline-size',
         background: 'linear-gradient(to bottom, var(--sky) 44%, var(--panel) 100%)',
         color: 'var(--ink)',
       }}
@@ -263,6 +265,7 @@ export function TimeLightCard({
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }
